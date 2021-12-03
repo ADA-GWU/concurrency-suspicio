@@ -7,6 +7,22 @@ public class Main {
     private static Integer chunkSize;
     private static Picture picture;
 
+    public static Integer getChunkSize() {
+        return chunkSize;
+    }
+
+    public static Picture getPicture() {
+        return picture;
+    }
+
+    public static void setPicture(Picture picture) {
+        Main.picture = picture;
+    }
+
+    public static void save() {
+        picture.show();
+    }
+
     static void createWindow() {
         window = new JFrame();
         window.setVisible(true);
@@ -14,12 +30,12 @@ public class Main {
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    static void redraw() {
+    static void rerender() {
         image.setIcon(new ImageIcon(picture.getImage()));
         window.revalidate();
     }
 
-    static void drawInitialImage() {
+    static void InitPictureInFrame() {
         window.setSize(picture.width(), picture.height() + 25);
         image = new JLabel(new ImageIcon(picture.getImage()));
         image.setSize(picture.width(), picture.height());
@@ -72,7 +88,7 @@ public class Main {
     public static void runSingleMode(String picName) {
         picture = new Picture(picName);
         createWindow();
-        drawInitialImage();
+        InitPictureInFrame();
         int imageWidth = picture.width();
         int imageHeight = picture.height();
 
@@ -87,7 +103,7 @@ public class Main {
             y0 = 0;
             for (int b = 0; b < rows + 1; b++) {
                 setColor(x0, y0, Math.min(x1, imageWidth - 1), Math.min(y1, imageHeight - 1), getColor(x0, y0, Math.min(x1, imageWidth - 1), Math.min(y1, imageHeight - 1)));
-                redraw();
+                rerender();
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException ie) {
@@ -109,6 +125,7 @@ public class Main {
         System.out.println(imgPath + " " + chunkSize + " " + m);
 
         if (m.equalsIgnoreCase("S"))
-        runSingleMode(imgPath);
+            runSingleMode(imgPath);
+        else MultiThread.runInParallel(imgPath);
     }
 }
