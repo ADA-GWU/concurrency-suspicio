@@ -92,7 +92,7 @@ public class Main {
         int imageWidth = picture.width();
         int imageHeight = picture.height();
 
-        int y0 = 0;
+        int y0;
         int x0 = 0;
         int rows = imageHeight / chunkSize;
         int cols = imageWidth / chunkSize;

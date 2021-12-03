@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class MultiThread extends Thread {
 
     private int x0, x1, y0, y1;
@@ -11,6 +9,7 @@ public class MultiThread extends Thread {
         this.y1 = y1;
     }
 
+    @Override
     public void run() {
         int y0;
         int x0 = this.x0;
@@ -23,7 +22,7 @@ public class MultiThread extends Thread {
                 Main.setColor(x0, y0, Math.min(x1, this.x1), Math.min(y1, this.y1), Main.getColor(x0, y0, Math.min(x1, this.x1), Math.min(y1, this.y1)));
                 Main.rerender();
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(10);
                 } catch (InterruptedException ie) {
                     ie.printStackTrace();
                 }
@@ -53,10 +52,12 @@ public class MultiThread extends Thread {
             multiThreads[i] = new MultiThread(chunksPerThread * i, chunksPerThread * i, chunksPerThread * (i + 1), chunksPerThread * (i + 1));
         }
 
-        Arrays.stream(multiThreads).forEach(MultiThread::start);
+        for (int i = 0; i < multiThreads.length; i++)
+            multiThreads[i].start();
 
         try {
-            for (MultiThread multiThread : multiThreads) multiThread.join();
+            for (int i = 0; i < multiThreads.length; i++)
+                multiThreads[i].join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
