@@ -2,35 +2,44 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
+
+    // printing image in JFame
     private static JFrame window;
     private static JLabel image;
     private static Integer chunkSize;
     private static Picture picture;
 
+    //Gives size of chunk
     public static Integer getChunkSize() {
         return chunkSize;
     }
 
+    //give number of chunks to work for
     public static Integer getChunks() {
         return (picture.height() / chunkSize) * (picture.width() / chunkSize);
     }
 
+    //returns number of rows
     public static Integer getWidthChunks() {
         return picture.width() / chunkSize;
     }
 
+    //returns number of columns
     public static Integer getHeightChunks() {
         return picture.height() / chunkSize;
     }
 
+    //setsPicture from external
     public static void setPicture(Picture picture) {
         Main.picture = picture;
     }
 
+    //save
     public static void save() {
         picture.show();
     }
 
+    //Creates window
     static void createWindow() {
         window = new JFrame();
         window.setVisible(true);
@@ -38,11 +47,13 @@ public class Main {
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    //redraws the frame
     static void rerender() {
         image.setIcon(new ImageIcon(picture.getImage()));
         window.revalidate();
     }
 
+    //initialization of frame
     static void InitPictureInFrame() {
         window.setSize(picture.width(), picture.height() + 25);
         image = new JLabel(new ImageIcon(picture.getImage()));
@@ -50,6 +61,7 @@ public class Main {
         window.add(image);
     }
 
+    //gets average color from block
     public static Color getColor(int fromX, int fromY, int toX, int toY) {
         int r = 0;
         int g = 0;
@@ -81,6 +93,7 @@ public class Main {
         return new Color(r, g, b);
     }
 
+    //sets an average color to block
     public static void setColor(int fromX, int fromY, int toX, int toY, Color color) {
         int frY = fromY;
         while (fromX <= toX) {
@@ -93,7 +106,9 @@ public class Main {
         }
     }
 
+    //runs single mode program
     public static void runSingleMode(String picName) {
+        //init
         picture = new Picture(picName);
         createWindow();
         InitPictureInFrame();
@@ -105,6 +120,7 @@ public class Main {
         int rows = imageHeight / chunkSize;
         int cols = imageWidth / chunkSize;
 
+        //goes for all cols and rows and repaint them
         for (int a = 0; a < cols + 1; a++) {
             int x1 = x0 + chunkSize;
             int y1 = chunkSize;
@@ -125,6 +141,7 @@ public class Main {
         picture.show();
     }
 
+    //main function decides what to run
     public static void main(String[] args) {
         String imgPath = args[0];
         chunkSize = Integer.parseInt(args[1]);
