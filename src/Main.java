@@ -11,8 +11,16 @@ public class Main {
         return chunkSize;
     }
 
-    public static Picture getPicture() {
-        return picture;
+    public static Integer getChunks() {
+        return (picture.height() / chunkSize) * (picture.width() / chunkSize);
+    }
+
+    public static Integer getWidthChunks() {
+        return picture.width() / chunkSize;
+    }
+
+    public static Integer getHeightChunks() {
+        return picture.height() / chunkSize;
     }
 
     public static void setPicture(Picture picture) {
@@ -51,9 +59,9 @@ public class Main {
         while (fromX < toX) {
             fromY = frY;
             while (fromY < toY) {
-                r += picture.get(fromX, fromY).getRed();
-                g += picture.get(fromX, fromY).getGreen();
-                b += picture.get(fromX, fromY).getBlue();
+                r += picture.get(Math.min(fromX, picture.width() - 1), Math.min(fromY, picture.height() - 1)).getRed();
+                g += picture.get(Math.min(fromX, picture.width() - 1), Math.min(fromY, picture.height() - 1)).getGreen();
+                b += picture.get(Math.min(fromX, picture.width() - 1), Math.min(fromY, picture.height() - 1)).getBlue();
                 fromY++;
                 count++;
             }
@@ -78,7 +86,7 @@ public class Main {
         while (fromX <= toX) {
             fromY = frY;
             while (fromY <= toY) {
-                picture.set(fromX, fromY, color);
+                picture.set(Math.min(fromX, picture.width() - 1), Math.min(fromY, picture.height() - 1), color);
                 fromY++;
             }
             fromX++;
@@ -121,8 +129,6 @@ public class Main {
         String imgPath = args[0];
         chunkSize = Integer.parseInt(args[1]);
         String m = args[2];
-
-        System.out.println(imgPath + " " + chunkSize + " " + m);
 
         if (m.equalsIgnoreCase("S"))
             runSingleMode(imgPath);
